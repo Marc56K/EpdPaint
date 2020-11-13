@@ -55,6 +55,7 @@ public:
     void DrawPixel(int x, int y, int colored);
     void DrawCharAt(int x, int y, char ascii_char, sFONT* font, int colored);
     void DrawStringAt(int x, int y, const char* text, sFONT* font, int colored);
+    void DrawUtf8StringAt(int x, int y, const char* text, sFONT* font, int colored);
     void DrawLine(int x0, int y0, int x1, int y1, int colored);
     void DrawHorizontalLine(int x, int y, int width, int colored);
     void DrawVerticalLine(int x, int y, int height, int colored);
