@@ -1,4 +1,9 @@
 {
   "name": "EpdPaint",
-  "version": "1.0.0+20201113151423"
+  "version": "1.0.1",
+  "repository":
+{
+    "type": "git",
+    "url": "https://github.com/Marc56K/EpdPaint.git"
+}
 }
