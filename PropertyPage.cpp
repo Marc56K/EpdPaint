@@ -54,7 +54,7 @@ void PropertyPage::Click()
 void PropertyPage::Scroll(const int delta)
 {
     auto selected = GetSelected();
-    if (selected != nullptr)
+    if (selected != nullptr && delta != 0)
     {
         if (selected->IsEditing())
         {
@@ -62,7 +62,7 @@ void PropertyPage::Scroll(const int delta)
         }
         else
         {
-            UpdateSelection(delta);
+            UpdateSelection(delta < 0 ? 1 : -1);
         }
     }
 }

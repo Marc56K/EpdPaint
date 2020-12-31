@@ -9,13 +9,16 @@ NumberEditor::NumberEditor(
         const double stepSize,
         const double minValue, 
         const double maxValue, 
-        const double value) : 
+        const double value,
+        std::function<void(const double)> onValueChanged) : 
     ValueEditor(name),
     _decimalPlaces(decimalPlaces),
     _stepSize(stepSize),
     _minValue(minValue),
     _maxValue(maxValue),
-    _editing(false)
+    _editing(false),
+    _value(value),
+    _onValueChanged(onValueChanged)
 {
     SetValue(value);
 }
@@ -31,7 +34,12 @@ double NumberEditor::GetValue() const
 
 double NumberEditor::SetValue(const double value)
 {
+    double oldValue = _value;
     _value = std::max(_minValue, std::min(_maxValue, value));
+    if (oldValue != _value && _onValueChanged != nullptr)
+    {
+        _onValueChanged(GetValue());
+    }
     return GetValue();
 }
 
@@ -70,10 +78,10 @@ void NumberEditor::Render(Paint& paint, const int x, const int y, sFONT& font) c
 
     std::string txt = _name + ": " + valueString;
 
-    const int boxWidth = txt.length() * font.Width;
+    const int boxWidth = 4 + txt.length() * font.Width;
     const int boxHeight = font.Height;
 
     paint.DrawFilledRectangle(x, y, x + boxWidth, y + boxHeight, colors[0]);
     paint.DrawRectangle      (x, y, x + boxWidth, y + boxHeight, colors[1]);
-    paint.DrawUtf8StringAt   (x, y + 1, txt.c_str(), &font, colors[2]);
+    paint.DrawUtf8StringAt   (x + 2, y + 1, txt.c_str(), &font, colors[2]);
 }
