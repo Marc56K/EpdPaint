@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include "ValueEditor.h"
 
 class NumberEditor : public ValueEditor
@@ -10,7 +11,8 @@ public:
         const double stepSize,
         const double minValue, 
         const double maxValue, 
-        const double value);
+        const double value,
+        std::function<void(const double)> onValueChanged = nullptr);
     virtual ~NumberEditor();
 
     double GetValue() const;
@@ -30,4 +32,5 @@ private:
     const double _maxValue;
     bool _editing;
     double _value;
+    std::function<void(const double)> _onValueChanged;
 };
