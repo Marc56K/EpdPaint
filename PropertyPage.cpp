@@ -63,7 +63,7 @@ void PropertyPage::Scroll(const int delta)
         }
         else
         {
-            UpdateSelection(delta < 0 ? 1 : -1);
+            UpdateSelection(delta < 0 ? -1 : 1);
         }
     }
 }
