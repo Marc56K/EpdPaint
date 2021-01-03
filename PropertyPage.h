@@ -15,7 +15,7 @@ public:
     void Click();
     void Scroll(const int delta);
 
-    void Render(Paint& paint, const int x, const int y);
+    void Render(Paint& paint, const int x, const int y, const int width);
 
 private:
     std::shared_ptr<ValueEditor> UpdateSelection(const int delta);

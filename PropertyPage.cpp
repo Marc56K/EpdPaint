@@ -9,6 +9,7 @@ void PropertyPage::Add(std::shared_ptr<ValueEditor> editor)
 {
     if (editor != nullptr)
     {
+        editor->SetFont(_font);
         _editors.push_back(editor);
         UpdateSelection(0);
     }
@@ -67,11 +68,13 @@ void PropertyPage::Scroll(const int delta)
     }
 }
 
-void PropertyPage::Render(Paint& paint, const int x, const int y)
+void PropertyPage::Render(Paint& paint, const int x, const int y, const int width)
 {
-    for (size_t i = 0; i < _editors.size(); i++)
+    int yPos = y;
+    for (auto editor : _editors)
     {
-        int yPos = y + i * (_font.Height + 2);
-        _editors[i]->Render(paint, x, yPos, _font);
+        editor->SetWdith(width);
+        editor->Render(paint, x, yPos);
+        yPos += editor->GetActualHeight() + 2;
     }
 }
