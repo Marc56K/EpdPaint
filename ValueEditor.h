@@ -20,11 +20,12 @@ public:
     virtual void ChangeValue(const int delta);
 
     virtual void SetFont(sFONT& font);
+    virtual void SetPadding(const int padding);
     virtual void SetWdith(const int width);
     virtual void SetHeight(const int height);
-    virtual void SetPadding(const int padding);
-    virtual int GetActualWidth() const = 0;
-    virtual int GetActualHeight() const = 0;
+
+    virtual int GetActualWidth() const;
+    virtual int GetActualHeight() const;
     virtual void Render(Paint& paint, const int x, const int y) const = 0;
 
     static void GetColors(const bool selected, int* back, int* front);
