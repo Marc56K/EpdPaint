@@ -36,6 +36,9 @@
 // Color inverse. 1 or 0 = set or reset a bit if set a colored pixel
 #define IF_INVERT_COLOR     1
 
+#define BLACK 0
+#define WHITE 1
+
 #include "fonts.h"
 #include "images.h"
 #include <string>

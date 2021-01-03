@@ -90,11 +90,11 @@ void NumberEditor::Render(Paint& paint, const int x, const int y) const
     std::string name = GetName() + ":";
     std::string value = GetValueAsString();
 
-    int colors[3] = { 1, 0, 0 }; // BG, Border, Text
+    int colors[3] = { WHITE, BLACK, BLACK }; // BG, Border, Text
     if (IsSelected())
     {
-        colors[0] = 0; // BG black
-        colors[2] = 1; // Text white        
+        colors[0] = BLACK; // BG black
+        colors[2] = WHITE; // Text white        
 
         if (IsEditing())
         {
