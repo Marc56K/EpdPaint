@@ -26,7 +26,6 @@
 
 #include <pgmspace.h>
 #include "epdpaint.h"
-#include <string>
 #include <sstream>
 
 Paint::Paint(unsigned char* image, int width, int height) {
@@ -194,62 +193,25 @@ void Paint::DrawStringAt(int x, int y, const char* text, sFONT* font, int colore
     }
 }
 
-void Paint::DrawUtf8StringAt(int x, int y, const char* text, sFONT* font, int colored) 
+void Paint::DrawUtf8StringAt(int x, int y, const char* text, sFONT* font, int colored, TextAlignment alignment)
 {
-    auto GetUtf8CharacterLength = [](const unsigned char utf8Char) -> int
+    if (font != nullptr)
     {
-        if ( utf8Char < 0x80 ) return 1;
-        else if ( ( utf8Char & 0x20 ) == 0 ) return 2;
-        else if ( ( utf8Char & 0x10 ) == 0 ) return 3;
-        else if ( ( utf8Char & 0x08 ) == 0 ) return 4;
-        else if ( ( utf8Char & 0x04 ) == 0 ) return 5;
+        std::string latin1String = Utf8ToLatin1String(text);
 
-        return 6;
-    };
-
-    auto Utf8ToLatin1Character = [&](const char *s, int& readIndex) -> char
-    {
-        int len = GetUtf8CharacterLength(static_cast<unsigned char>( s[readIndex]));
-        if (len == 1)
+        switch(alignment)
         {
-            char c = s[readIndex];
-            readIndex++;
-            return c;
+            case TextAlignment::LEFT:                
+                break;
+            case TextAlignment::CENTER:
+                x -= (latin1String.length() * font->Width / 2);
+                break;
+            case TextAlignment::RIGHT:
+                x -= latin1String.length() * font->Width;
         }
-
-        unsigned int v = (s[readIndex] & (0xff >> (len + 1))) << ((len - 1) * 6);
-        readIndex++;
-        for (len--; len > 0; len--)
-        {
-            v |= (static_cast<unsigned char>(s[readIndex]) - 0x80) << (( len - 1 ) * 6);
-            readIndex++;
-        }
-
-        return ( v > 0xff ) ? 0 : (char)v;
-    };
-
-    auto Utf8ToLatin1String = [&](const std::string& utf8String) -> std::string
-    {
-        std::ostringstream result;
-        const char* s = utf8String.c_str();
-        int readIndex = 0;
-        while(s[readIndex] != 0)
-        {
-            char c = Utf8ToLatin1Character(s, readIndex);
-            if ( c == 0 )
-            {
-                c = '?';
-            }
-
-            result << c;
-        }
-
-        return result.str();
-    };
-
-    std::string latin1String = Utf8ToLatin1String(text);
-
-    DrawStringAt(x, y, latin1String.c_str(), font, colored);
+        
+        DrawStringAt(x, y, latin1String.c_str(), font, colored);
+    }
 }
 
 /**
@@ -409,6 +371,58 @@ void Paint::DrawImage(int x, int y, sIMAGE* img)
             ptr++;
         }
     }
+}
+
+std::string Paint::Utf8ToLatin1String(const char* utf8Text)
+{
+    auto GetUtf8CharacterLength = [](const unsigned char utf8Char) -> int
+    {
+        if ( utf8Char < 0x80 ) return 1;
+        else if ( ( utf8Char & 0x20 ) == 0 ) return 2;
+        else if ( ( utf8Char & 0x10 ) == 0 ) return 3;
+        else if ( ( utf8Char & 0x08 ) == 0 ) return 4;
+        else if ( ( utf8Char & 0x04 ) == 0 ) return 5;
+
+        return 6;
+    };
+
+    auto Utf8ToLatin1Character = [&](const char *s, int& readIndex) -> char
+    {
+        int len = GetUtf8CharacterLength(static_cast<unsigned char>( s[readIndex]));
+        if (len == 1)
+        {
+            char c = s[readIndex];
+            readIndex++;
+            return c;
+        }
+
+        unsigned int v = (s[readIndex] & (0xff >> (len + 1))) << ((len - 1) * 6);
+        readIndex++;
+        for (len--; len > 0; len--)
+        {
+            v |= (static_cast<unsigned char>(s[readIndex]) - 0x80) << (( len - 1 ) * 6);
+            readIndex++;
+        }
+
+        return ( v > 0xff ) ? 0 : (char)v;
+    };
+
+ 
+    std::ostringstream result;
+    const char* s = utf8Text;
+    int readIndex = 0;
+    while(s[readIndex] != 0)
+    {
+        char c = Utf8ToLatin1Character(s, readIndex);
+        if ( c == 0 )
+        {
+            c = '?';
+        }
+
+        result << c;
+    }
+
+    return result.str();
 }
 
 /* END OF FILE */

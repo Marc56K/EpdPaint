@@ -5,6 +5,7 @@
 
 NumberEditor::NumberEditor(
         const std::string& name,
+        const std::string& unit,
         const int decimalPlaces,
         const double stepSize,
         const double minValue, 
@@ -12,6 +13,7 @@ NumberEditor::NumberEditor(
         const double value,
         std::function<void(const double)> onValueChanged) : 
     ValueEditor(name),
+    _unit(unit),
     _decimalPlaces(decimalPlaces),
     _stepSize(stepSize),
     _minValue(minValue),
@@ -30,6 +32,13 @@ NumberEditor::~NumberEditor()
 double NumberEditor::GetValue() const
 {
     return _value;
+}
+
+std::string NumberEditor::GetValueAsString() const
+{
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(_decimalPlaces) << GetValue() << _unit;
+    return ss.str();
 }
 
 double NumberEditor::SetValue(const double value)
@@ -58,11 +67,28 @@ void NumberEditor::ChangeValue(const int delta)
     SetValue(GetValue() + _stepSize * delta);
 }
 
-void NumberEditor::Render(Paint& paint, const int x, const int y, sFONT& font) const
+int NumberEditor::GetActualWidth() const
 {
-    std::stringstream ss;
-    ss << std::fixed << std::setprecision(_decimalPlaces) << GetValue();
-    std::string valueString = ss.str();
+    if (_width < 0)
+    {
+        return (_name.length() + GetValueAsString().length() + 3) * _font.Width + 2 * _padding;
+    }
+    return _width;
+}
+
+int NumberEditor::GetActualHeight() const
+{
+    if (_height < 0)
+    {
+        return _font.Height + 2 * _padding;
+    }
+    return _height;
+}
+
+void NumberEditor::Render(Paint& paint, const int x, const int y) const
+{
+    std::string name = GetName() + ":";
+    std::string value = GetValueAsString();
 
     int colors[3] = { 1, 0, 0 }; // BG, Border, Text
     if (IsSelected())
@@ -72,16 +98,16 @@ void NumberEditor::Render(Paint& paint, const int x, const int y, sFONT& font) c
 
         if (IsEditing())
         {
-            valueString = "[" + valueString + "]";
+            value = "[" + value + "]";
         }
     }
 
-    std::string txt = _name + ": " + valueString;
-
-    const int boxWidth = 4 + txt.length() * font.Width;
-    const int boxHeight = font.Height;
+    const int boxWidth = GetActualWidth();
+    const int boxHeight = GetActualHeight();
 
     paint.DrawFilledRectangle(x, y, x + boxWidth, y + boxHeight, colors[0]);
-    paint.DrawRectangle      (x, y, x + boxWidth, y + boxHeight, colors[1]);
-    paint.DrawUtf8StringAt   (x + 2, y + 1, txt.c_str(), &font, colors[2]);
+    paint.DrawRectangle(x, y, x + boxWidth, y + boxHeight, colors[1]);
+
+    paint.DrawUtf8StringAt(x + _padding, y + _padding, name.c_str(), &_font, colors[2], TextAlignment::LEFT);
+    paint.DrawUtf8StringAt(x + boxWidth - _padding, y + _padding, value.c_str(), &_font, colors[2], TextAlignment::RIGHT);
 }

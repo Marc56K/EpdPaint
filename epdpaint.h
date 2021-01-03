@@ -38,8 +38,17 @@
 
 #include "fonts.h"
 #include "images.h"
+#include <string>
 
-class Paint {
+enum TextAlignment
+{
+    LEFT = 0,
+    CENTER,
+    RIGHT
+};
+
+class Paint 
+{
 public:
     Paint(unsigned char* image, int width, int height);
     ~Paint();
@@ -55,7 +64,7 @@ public:
     void DrawPixel(int x, int y, int colored);
     void DrawCharAt(int x, int y, char ascii_char, sFONT* font, int colored);
     void DrawStringAt(int x, int y, const char* text, sFONT* font, int colored);
-    void DrawUtf8StringAt(int x, int y, const char* text, sFONT* font, int colored);
+    void DrawUtf8StringAt(int x, int y, const char* text, sFONT* font, int colored, TextAlignment alignment = TextAlignment::LEFT);
     void DrawLine(int x0, int y0, int x1, int y1, int colored);
     void DrawHorizontalLine(int x, int y, int width, int colored);
     void DrawVerticalLine(int x, int y, int height, int colored);
@@ -64,6 +73,8 @@ public:
     void DrawCircle(int x, int y, int radius, int colored);
     void DrawFilledCircle(int x, int y, int radius, int colored);
     void DrawImage(int x, int y, sIMAGE* img);
+
+    static std::string Utf8ToLatin1String(const char* utf8Text);
 
 private:
     unsigned char* image;

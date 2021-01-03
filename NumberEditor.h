@@ -7,6 +7,7 @@ class NumberEditor : public ValueEditor
 public:
     NumberEditor(
         const std::string& name,
+        const std::string& unit,
         const int decimalPlaces,
         const double stepSize,
         const double minValue, 
@@ -16,6 +17,7 @@ public:
     virtual ~NumberEditor();
 
     double GetValue() const;
+    std::string GetValueAsString() const;
     double SetValue(const double value);
 
     bool IsEditing() const override;
@@ -23,9 +25,12 @@ public:
     void Click() override;
     void ChangeValue(const int delta) override;
 
-    void Render(Paint& paint, const int x, const int y, sFONT& font) const override;
+    int GetActualWidth() const override;
+    int GetActualHeight() const override;
+    void Render(Paint& paint, const int x, const int y) const override;
 
 private:
+    const std::string _unit;
     const int _decimalPlaces;
     const double _stepSize;
     const double _minValue;
