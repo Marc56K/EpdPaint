@@ -1,4 +1,5 @@
 #include "ValueEditor.h"
+#include <sstream>
 
 ValueEditor::ValueEditor(const std::string& utf8name) :
     _utf8name(utf8name),
@@ -53,6 +54,11 @@ void ValueEditor::SetFont(sFONT& font)
     _font = font;
 }
 
+void ValueEditor::SetPadding(const int padding)
+{
+    _padding = padding;
+}
+
 void ValueEditor::SetWdith(const int width)
 {
     _width = width;
@@ -63,10 +69,24 @@ void ValueEditor::SetHeight(const int height)
     _height = height;
 }
 
-void ValueEditor::SetPadding(const int padding)
+int ValueEditor::GetActualWidth() const
 {
-    _padding = padding;
+    if (_width < 0)
+    {
+        return (_latin1name.length() + 2) * _font.Width + 2 * _padding;
+    }
+    return _width;
 }
+
+int ValueEditor::GetActualHeight() const
+{
+    if (_height < 0)
+    {
+        return _font.Height + 2 * _padding;
+    }
+    return _height;
+}
+
 
 void ValueEditor::GetColors(const bool selected, int* back, int* front)
 {
