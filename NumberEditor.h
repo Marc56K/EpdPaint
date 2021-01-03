@@ -26,7 +26,6 @@ public:
     void ChangeValue(const int delta) override;
 
     int GetActualWidth() const override;
-    int GetActualHeight() const override;
     void Render(Paint& paint, const int x, const int y) const override;
 
 private:

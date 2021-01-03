@@ -71,39 +71,32 @@ int NumberEditor::GetActualWidth() const
 {
     if (_width < 0)
     {
-        return (_latin1name.length() + GetValueAsString().length() + 2) * _font.Width + 2 * _padding;
+        return ValueEditor::GetActualWidth() + GetValueAsString().length() * _font.Width;
     }
     return _width;
 }
 
-int NumberEditor::GetActualHeight() const
-{
-    if (_height < 0)
-    {
-        return _font.Height + 2 * _padding;
-    }
-    return _height;
-}
-
 void NumberEditor::Render(Paint& paint, const int x, const int y) const
 {
-    std::string name = _utf8name + ":";
-    std::string value = GetValueAsString();
-
     const int boxWidth = GetActualWidth();
     const int boxHeight = GetActualHeight();
 
     // name
+    std::string name = _utf8name + ":";
     int back, front;
     GetColors(IsSelected() && !IsEditing(), &back, &front);
     paint.DrawFilledRectangle(x, y, x + boxWidth, y + boxHeight, back);
     paint.DrawUtf8StringAt(x + _padding, y + _padding, name.c_str(), &_font, front, TextAlignment::LEFT);
 
     // value
-    GetColors(IsSelected() || IsEditing(), &back, &front);
+    std::string value = GetValueAsString();
     const int xRight = x + boxWidth - _padding;
     const int xLeft = xRight - value.length() * _font.Width - _padding;
-    paint.DrawFilledRectangle(xLeft, y, x + boxWidth, y + boxHeight, back);
+    if (IsEditing())
+    {
+        GetColors(true, &back, &front);
+        paint.DrawFilledRectangle(xLeft, y, x + boxWidth, y + boxHeight, back);
+    }
     paint.DrawUtf8StringAt(xRight, y + _padding, value.c_str(), &_font, front, TextAlignment::RIGHT);
 
     // border
