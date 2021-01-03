@@ -1,7 +1,8 @@
 #include "ValueEditor.h"
 
-ValueEditor::ValueEditor(const std::string& name) :
-    _name(name),
+ValueEditor::ValueEditor(const std::string& utf8name) :
+    _utf8name(utf8name),
+    _latin1name(Paint::Utf8ToLatin1String(utf8name.c_str())),
     _selected(false),
     _font(Font12),
     _width(-1),
@@ -14,9 +15,9 @@ ValueEditor::~ValueEditor()
 {    
 }
 
-const std::string& ValueEditor::GetName() const
+const std::string& ValueEditor::GetUtf8Name() const
 {
-    return _name;
+    return _utf8name;
 }
 
 bool ValueEditor::IsSelected() const
@@ -65,4 +66,26 @@ void ValueEditor::SetHeight(const int height)
 void ValueEditor::SetPadding(const int padding)
 {
     _padding = padding;
+}
+
+void ValueEditor::GetColors(const bool selected, int* back, int* front)
+{
+    auto setColor = [](int* target, const int color)
+    {
+        if (target != nullptr)
+        {
+            *target = color;
+        }
+    };
+
+    if (selected)
+    {
+        setColor(back, BLACK);
+        setColor(front, WHITE);
+    }
+    else
+    {
+        setColor(back, WHITE);
+        setColor(front, BLACK);
+    }
 }

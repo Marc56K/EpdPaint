@@ -71,7 +71,7 @@ int NumberEditor::GetActualWidth() const
 {
     if (_width < 0)
     {
-        return (_name.length() + GetValueAsString().length() + 3) * _font.Width + 2 * _padding;
+        return (_latin1name.length() + GetValueAsString().length() + 2) * _font.Width + 2 * _padding;
     }
     return _width;
 }
@@ -87,27 +87,25 @@ int NumberEditor::GetActualHeight() const
 
 void NumberEditor::Render(Paint& paint, const int x, const int y) const
 {
-    std::string name = GetName() + ":";
+    std::string name = _utf8name + ":";
     std::string value = GetValueAsString();
-
-    int colors[3] = { WHITE, BLACK, BLACK }; // BG, Border, Text
-    if (IsSelected())
-    {
-        colors[0] = BLACK; // BG black
-        colors[2] = WHITE; // Text white        
-
-        if (IsEditing())
-        {
-            value = "[" + value + "]";
-        }
-    }
 
     const int boxWidth = GetActualWidth();
     const int boxHeight = GetActualHeight();
 
-    paint.DrawFilledRectangle(x, y, x + boxWidth, y + boxHeight, colors[0]);
-    paint.DrawRectangle(x, y, x + boxWidth, y + boxHeight, colors[1]);
+    // name
+    int back, front;
+    GetColors(IsSelected() && !IsEditing(), &back, &front);
+    paint.DrawFilledRectangle(x, y, x + boxWidth, y + boxHeight, back);
+    paint.DrawUtf8StringAt(x + _padding, y + _padding, name.c_str(), &_font, front, TextAlignment::LEFT);
 
-    paint.DrawUtf8StringAt(x + _padding, y + _padding, name.c_str(), &_font, colors[2], TextAlignment::LEFT);
-    paint.DrawUtf8StringAt(x + boxWidth - _padding, y + _padding, value.c_str(), &_font, colors[2], TextAlignment::RIGHT);
+    // value
+    GetColors(IsSelected() || IsEditing(), &back, &front);
+    const int xRight = x + boxWidth - _padding;
+    const int xLeft = xRight - value.length() * _font.Width - _padding;
+    paint.DrawFilledRectangle(xLeft, y, x + boxWidth, y + boxHeight, back);
+    paint.DrawUtf8StringAt(xRight, y + _padding, value.c_str(), &_font, front, TextAlignment::RIGHT);
+
+    // border
+    paint.DrawRectangle(x, y, x + boxWidth, y + boxHeight, BLACK);
 }

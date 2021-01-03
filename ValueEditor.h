@@ -5,10 +5,10 @@
 class ValueEditor
 {
 public:
-    ValueEditor(const std::string& name);
+    ValueEditor(const std::string& utf8name);
     virtual ~ValueEditor();
 
-    virtual const std::string& GetName() const;
+    virtual const std::string& GetUtf8Name() const;
 
     virtual bool IsSelected() const;
     virtual void Select();
@@ -27,8 +27,11 @@ public:
     virtual int GetActualHeight() const = 0;
     virtual void Render(Paint& paint, const int x, const int y) const = 0;
 
+    static void GetColors(const bool selected, int* back, int* front);
+
 protected:
-    const std::string _name;
+    const std::string _utf8name;
+    const std::string _latin1name;
     bool _selected;
 
     sFONT& _font;
