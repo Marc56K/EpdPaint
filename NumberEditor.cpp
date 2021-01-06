@@ -95,7 +95,7 @@ void NumberEditor::Render(Paint& paint, const int x, const int y) const
     if (IsEditing())
     {
         GetColors(true, &back, &front);
-        paint.DrawFilledRectangle(xLeft, y, x + boxWidth, y + boxHeight, back);
+        paint.DrawFilledRectangle(xLeft, y, xRight, y + boxHeight, back);
     }
     paint.DrawUtf8StringAt(xRight, y + _padding, value.c_str(), &_font, front, TextAlignment::RIGHT);
 

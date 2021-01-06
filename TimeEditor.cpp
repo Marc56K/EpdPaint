@@ -1,11 +1,7 @@
 #include "TimeEditor.h"
 #include <iomanip>
 #include <sstream>
-
-int mod(int a, int b)
-{
-    return (a % b + b) % b; 
-}
+#include "MathUtils.h"
 
 TimeEditor::TimeEditor(
         const std::string& name,
@@ -66,10 +62,10 @@ void TimeEditor::ChangeValue(const int delta)
     switch (_editingIdx)
     {
     case 1:
-        SetTime(mod((int)_hh + delta, 24), _mm);
+        SetTime(MathUtils::Modulo((int)_hh + delta, 24), _mm);
         break;
     case 2:
-        SetTime(_hh, mod((int)_mm + delta, 60));
+        SetTime(_hh, MathUtils::Modulo((int)_mm + delta, 60));
         break;
     default:
         break;

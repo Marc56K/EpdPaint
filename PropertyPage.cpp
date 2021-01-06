@@ -1,4 +1,5 @@
 #include "PropertyPage.h"
+#include "MathUtils.h"
 
 PropertyPage::PropertyPage(sFONT& font) :
     _font(font), _selectedIdx(0)
@@ -25,7 +26,7 @@ std::shared_ptr<ValueEditor> PropertyPage::UpdateSelection(const int delta)
     std::shared_ptr<ValueEditor> result = nullptr;
     if (!_editors.empty())
     {
-        _selectedIdx = (_selectedIdx + delta) % _editors.size();
+        _selectedIdx = MathUtils::Modulo<int>(_selectedIdx + delta, _editors.size());
         for (int i = 0; i < _editors.size(); ++i)
         {
             auto editor = _editors[i];
