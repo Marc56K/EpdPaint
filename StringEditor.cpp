@@ -58,32 +58,34 @@ void StringEditor::Scroll(const int delta)
     {
         if (_editChar)
         {
+            std::string value = _value;
             const char nac = ' ' - 1;
-            const char minc = (_value.length() > 1 && _editPos < _value.length() - 1) ? ' ' : nac;
+            const char minc = (value.length() > 1 && _editPos < value.length() - 1) ? ' ' : nac;
             const char maxc = '~';
             int c = minc;
-            if (_editPos < _value.length())
+            if (_editPos < value.length())
             {
-                c = _value[_editPos];
+                c = value[_editPos];
             }
 
             const int val = delta + c - minc;
             c = (char)(MathUtils::Modulo(val, maxc - minc) + minc);
-            if (_editPos < _value.length())
+            if (_editPos < value.length())
             {
                 if (c == nac)
                 {
-                    _value.resize(_value.length() - 1);
+                    value.resize(value.length() - 1);
                 }
                 else
                 {
-                    _value[_editPos] = c;
+                    value[_editPos] = c;
                 }
             }
             else if (c != nac)
             {
-                _value += (char)c;
+                value += (char)c;
             }
+            SetValue(value);
         }
         else
         {
