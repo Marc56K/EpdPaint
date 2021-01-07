@@ -62,31 +62,20 @@ void NumberEditor::Click()
     _editing = !_editing;
 }
 
-void NumberEditor::ChangeValue(const int delta)
+void NumberEditor::Scroll(const int delta)
 {
     SetValue(GetValue() + _stepSize * delta);
 }
 
-int NumberEditor::GetActualWidth() const
-{
-    if (_width < 0)
-    {
-        return ValueEditor::GetActualWidth() + GetValueAsString().length() * _font.Width;
-    }
-    return _width;
-}
-
 void NumberEditor::Render(Paint& paint, const int x, const int y) const
 {
+    ValueEditor::Render(paint, x, y);
+    
     const int boxWidth = GetActualWidth();
     const int boxHeight = GetActualHeight();
 
-    // name
-    std::string name = _utf8name + ":";
     int back, front;
     GetColors(IsSelected() && !IsEditing(), &back, &front);
-    paint.DrawFilledRectangle(x, y, x + boxWidth, y + boxHeight, back);
-    paint.DrawUtf8StringAt(x + _padding, y + _padding, name.c_str(), &_font, front, TextAlignment::LEFT);
 
     // value
     std::string value = GetValueAsString();
@@ -98,7 +87,4 @@ void NumberEditor::Render(Paint& paint, const int x, const int y) const
         paint.DrawFilledRectangle(xLeft, y, xRight, y + boxHeight, back);
     }
     paint.DrawUtf8StringAt(xRight, y + _padding, value.c_str(), &_font, front, TextAlignment::RIGHT);
-
-    // border
-    paint.DrawRectangle(x, y, x + boxWidth, y + boxHeight, BLACK);
 }

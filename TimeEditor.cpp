@@ -57,7 +57,7 @@ void TimeEditor::Click()
     _editingIdx = (_editingIdx + 1) % 3;
 }
 
-void TimeEditor::ChangeValue(const int delta)
+void TimeEditor::Scroll(const int delta)
 {
     switch (_editingIdx)
     {
@@ -72,26 +72,15 @@ void TimeEditor::ChangeValue(const int delta)
     }
 }
 
-int TimeEditor::GetActualWidth() const
-{
-    if (_width < 0)
-    {
-        return ValueEditor::GetActualWidth() + 5 * _font.Width;
-    }
-    return _width;
-}
-
 void TimeEditor::Render(Paint& paint, const int x, const int y) const
 {
+    ValueEditor::Render(paint, x, y);
+    
     const int boxWidth = GetActualWidth();
     const int boxHeight = GetActualHeight();
 
-    // name
-    const std::string name = _utf8name + ":";
     int back, front;
     GetColors(IsSelected() && !IsEditing(), &back, &front);
-    paint.DrawFilledRectangle(x, y, x + boxWidth, y + boxHeight, back);
-    paint.DrawUtf8StringAt(x + _padding, y + _padding, name.c_str(), &_font, front, TextAlignment::LEFT);
 
     // time
     paint.DrawUtf8StringAt(x + boxWidth - _padding, y + _padding, ":  ", &_font, front, TextAlignment::RIGHT);
@@ -114,7 +103,4 @@ void TimeEditor::Render(Paint& paint, const int x, const int y) const
 
         paint.DrawUtf8StringAt(xLeft, y + _padding, value.c_str(), &_font, front, TextAlignment::LEFT);
     }
-
-    // border
-    paint.DrawRectangle(x, y, x + boxWidth, y + boxHeight, BLACK);
 }

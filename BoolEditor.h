@@ -17,13 +17,11 @@ public:
     bool IsEditing() const override;
 
     void Click() override;
-    void ChangeValue(const int delta) override;
+    void Scroll(const int delta) override;
 
-    int GetActualWidth() const override;
     void Render(Paint& paint, const int x, const int y) const override;
 
 private:
-    bool _editing;
     bool _value;
     std::function<void(const bool)> _onValueChanged;
 };

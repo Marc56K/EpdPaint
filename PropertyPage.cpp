@@ -60,7 +60,7 @@ void PropertyPage::Scroll(const int delta)
     {
         if (selected->IsEditing())
         {
-            selected->ChangeValue(delta);
+            selected->Scroll(delta);
         }
         else
         {
