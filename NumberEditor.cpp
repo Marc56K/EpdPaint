@@ -34,22 +34,17 @@ double NumberEditor::GetValue() const
     return _value;
 }
 
-std::string NumberEditor::GetValueAsString() const
+void NumberEditor::SetValue(const double value)
 {
-    std::stringstream ss;
-    ss << std::fixed << std::setprecision(_decimalPlaces) << GetValue() << _unit;
-    return ss.str();
-}
-
-double NumberEditor::SetValue(const double value)
-{
-    double oldValue = _value;
-    _value = std::max(_minValue, std::min(_maxValue, value));
-    if (oldValue != _value && _onValueChanged != nullptr)
+    const double newValue = std::max(_minValue, std::min(_maxValue, value));
+    if (_value != newValue)
     {
-        _onValueChanged(GetValue());
+        _value = newValue;
+        if (_onValueChanged != nullptr)
+        {
+            _onValueChanged(_value);
+        }
     }
-    return GetValue();
 }
 
 bool NumberEditor::IsEditing() const
@@ -77,10 +72,17 @@ void NumberEditor::Render(Paint& paint, const int x, const int y) const
     int back, front;
     GetColors(IsSelected() && !IsEditing(), &back, &front);
 
+    // unit
+    int xRight = x + boxWidth - _padding;
+    paint.DrawUtf8StringAt(xRight, y + _padding, _unit.c_str(), &_font, front, TextAlignment::RIGHT);
+
     // value
-    std::string value = GetValueAsString();
-    const int xRight = x + boxWidth - _padding;
-    const int xLeft = xRight - value.length() * _font.Width - _padding;
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(_decimalPlaces) << GetValue();
+    std::string value =  ss.str();
+
+    xRight -= _unit.length() * _font.Width;
+    const int xLeft = xRight - value.length() * _font.Width;
     if (IsEditing())
     {
         GetColors(true, &back, &front);

@@ -9,12 +9,11 @@ public:
         const std::string& name,
         const uint8_t hh,
         const uint8_t mm,
-        std::function<void(const uint8_t hh, const uint8_t mm)> onTimeChanged = nullptr);
+        std::function<void(const uint8_t hh, const uint8_t mm)> onValueChanged = nullptr);
     virtual ~TimeEditor();
 
-    void GetTime(uint8_t& hh, uint8_t& mm) const;
-    std::string GetTimeComponentAsString(const uint8_t timeComponent) const;
-    void SetTime(const uint8_t hh, const uint8_t mm);
+    void GetValue(uint8_t& hh, uint8_t& mm) const;
+    void SetValue(const uint8_t hh, const uint8_t mm);
 
     bool IsEditing() const override;
 
@@ -26,6 +25,6 @@ public:
 private:
     uint8_t _hh;
     uint8_t _mm;
-    std::function<void(const uint8_t hh, const uint8_t mm)> _onTimeChanged;
-    uint8_t _editingIdx;
+    std::function<void(const uint8_t hh, const uint8_t mm)> _onValueChanged;
+    uint8_t _editMode;
 };

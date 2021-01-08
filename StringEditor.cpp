@@ -6,7 +6,7 @@ StringEditor::StringEditor(
         const std::string& value,
         std::function<void(const std::string&)> onValueChanged) :
     ValueEditor(name),
-    _editPos(-1),
+    _editIdx(-1),
     _editChar(false),
     _value(value),
     _onValueChanged(onValueChanged)
@@ -36,14 +36,14 @@ void StringEditor::SetValue(const std::string& value)
 
 bool StringEditor::IsEditing() const
 {
-    return _editPos > -1;
+    return _editIdx > -1;
 }
 
 void StringEditor::Click()
 {
-    if (_editPos < 0)
+    if (_editIdx < 0)
     {
-        _editPos = 0;
+        _editIdx = 0;
         _editChar = false;
     }
     else
@@ -54,23 +54,23 @@ void StringEditor::Click()
 
 void StringEditor::Scroll(const int delta)
 {
-    if (_editPos > -1)
+    if (_editIdx > -1)
     {
         if (_editChar)
         {
             std::string value = _value;
             const char nac = ' ' - 1;
-            const char minc = (value.length() > 1 && _editPos < value.length() - 1) ? ' ' : nac;
+            const char minc = (value.length() > 1 && _editIdx < value.length() - 1) ? ' ' : nac;
             const char maxc = '~';
             int c = minc;
-            if (_editPos < value.length())
+            if (_editIdx < value.length())
             {
-                c = value[_editPos];
+                c = value[_editIdx];
             }
 
             const int val = delta + c - minc;
             c = (char)(MathUtils::Modulo(val, maxc - minc) + minc);
-            if (_editPos < value.length())
+            if (_editIdx < value.length())
             {
                 if (c == nac)
                 {
@@ -78,7 +78,7 @@ void StringEditor::Scroll(const int delta)
                 }
                 else
                 {
-                    value[_editPos] = c;
+                    value[_editIdx] = c;
                 }
             }
             else if (c != nac)
@@ -89,8 +89,8 @@ void StringEditor::Scroll(const int delta)
         }
         else
         {
-            _editPos = std::max(-1, std::min(_editPos + delta, (int)_value.length()));
-            if (_editPos < 0)
+            _editIdx = std::max(-1, std::min(_editIdx + delta, (int)_value.length()));
+            if (_editIdx < 0)
             {
                 _editChar = false;
             }
@@ -120,7 +120,7 @@ void StringEditor::Render(Paint& paint, const int x, const int y) const
     }
 
     int maxChars = std::max<int>(_font.Width, boxWidth - _font.Width * (_latin1name.length() + 2)) / _font.Width;
-    int editPos = _editPos;
+    int editIdx = _editIdx;
     int xPos = x + boxWidth - _padding;
     int yPos = y + _padding;
     int startIdx = 0;
@@ -128,7 +128,7 @@ void StringEditor::Render(Paint& paint, const int x, const int y) const
 
     if (maxChars < value.length())
     {
-        while (editPos > startIdx + maxChars - 1)
+        while (editIdx > startIdx + maxChars - 1)
         {
             ++startIdx;
         }
@@ -153,7 +153,7 @@ void StringEditor::Render(Paint& paint, const int x, const int y) const
         xPos -= _font.Width;
         drawChar(xPos, i, front);
 
-        if (i == editPos)
+        if (i == editIdx)
         {
             if (_editChar)
             {

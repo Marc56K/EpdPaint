@@ -17,8 +17,7 @@ public:
     virtual ~NumberEditor();
 
     double GetValue() const;
-    std::string GetValueAsString() const;
-    double SetValue(const double value);
+    void SetValue(const double value);
 
     bool IsEditing() const override;
 

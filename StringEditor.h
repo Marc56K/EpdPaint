@@ -22,7 +22,7 @@ public:
     void Render(Paint& paint, const int x, const int y) const override;
 
 private:
-    int _editPos;
+    int _editIdx;
     bool _editChar;
     std::string _value;
     std::function<void(const std::string&)> _onValueChanged;

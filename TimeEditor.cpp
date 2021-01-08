@@ -7,65 +7,58 @@ TimeEditor::TimeEditor(
         const std::string& name,
         const uint8_t hh,
         const uint8_t mm,
-        std::function<void(const uint8_t hh, const uint8_t mm)> onTimeChanged) :
+        std::function<void(const uint8_t hh, const uint8_t mm)> onValueChanged) :
     ValueEditor(name),
     _hh(hh),
     _mm(mm),
-    _onTimeChanged(onTimeChanged),
-    _editingIdx(0)
+    _onValueChanged(onValueChanged),
+    _editMode(0)
 {    
-    SetTime(hh, mm);
+    SetValue(hh, mm);
 }
 
 TimeEditor::~TimeEditor()
 {    
 }
 
-void TimeEditor::GetTime(uint8_t& hh, uint8_t& mm) const
+void TimeEditor::GetValue(uint8_t& hh, uint8_t& mm) const
 {
     hh = _hh;
     mm = _mm;
 }
 
-std::string TimeEditor::GetTimeComponentAsString(const uint8_t timeComponent) const
-{
-    std::stringstream ss;
-    ss << std::setw(2) << std::setfill('0') << (int)timeComponent;
-    return ss.str();
-}
-
-void TimeEditor::SetTime(const uint8_t hh, const uint8_t mm)
+void TimeEditor::SetValue(const uint8_t hh, const uint8_t mm)
 {
     if (_hh != hh || _mm != mm)
     {
         _hh = hh % 24;
         _mm = mm % 60;
-        if (_onTimeChanged != nullptr)
+        if (_onValueChanged != nullptr)
         {
-            _onTimeChanged(_hh, _mm);
+            _onValueChanged(_hh, _mm);
         }
     }
 }
 
 bool TimeEditor::IsEditing() const
 {
-    return _editingIdx > 0;
+    return _editMode > 0;
 }
 
 void TimeEditor::Click()
 {
-    _editingIdx = (_editingIdx + 1) % 3;
+    _editMode = (_editMode + 1) % 3;
 }
 
 void TimeEditor::Scroll(const int delta)
 {
-    switch (_editingIdx)
+    switch (_editMode)
     {
     case 1:
-        SetTime(MathUtils::Modulo((int)_hh + delta, 24), _mm);
+        SetValue(MathUtils::Modulo((int)_hh + delta, 24), _mm);
         break;
     case 2:
-        SetTime(_hh, MathUtils::Modulo((int)_mm + delta, 60));
+        SetValue(_hh, MathUtils::Modulo((int)_mm + delta, 60));
         break;
     default:
         break;
@@ -86,12 +79,14 @@ void TimeEditor::Render(Paint& paint, const int x, const int y) const
     paint.DrawUtf8StringAt(x + boxWidth - _padding, y + _padding, ":  ", &_font, front, TextAlignment::RIGHT);
     for (uint8_t i = 0; i < 2; ++i)
     {
-        std::string value = GetTimeComponentAsString(i == 0 ? _hh : _mm);
+        std::stringstream ss;
+        ss << std::setw(2) << std::setfill('0') << (int)(i == 0 ? _hh : _mm);
+        std::string value = ss.str();
         
         const int xLeft = x + boxWidth - _padding - 5 * _font.Width + (i * 2 + i) * _font.Width;
         const int xRight = xLeft + 2 * _font.Width;
         
-        if (i + 1 == _editingIdx)
+        if (i + 1 == _editMode)
         {
             GetColors(true, &back, &front);
             paint.DrawFilledRectangle(xLeft, y, xRight, y + boxHeight, back);
