@@ -1,7 +1,11 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "ValueEditor.h"
+#include "NumberEditor.h"
+#include "TimeEditor.h"
+#include "BoolEditor.h"
+#include "StringEditor.h"
+#include "OptionEditor.h"
 
 class PropertyPage
 {
