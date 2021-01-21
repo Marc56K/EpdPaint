@@ -65,7 +65,7 @@ void TimeEditor::Scroll(const int delta)
     }
 }
 
-void TimeEditor::Render(Paint& paint, const int x, const int y) const
+void TimeEditor::Render(Paint& paint, const int x, const int y)
 {
     ValueEditor::Render(paint, x, y);
     

@@ -47,7 +47,7 @@ void BoolEditor::Scroll(const int delta)
     SetValue(!GetValue());
 }
 
-void BoolEditor::Render(Paint& paint, const int x, const int y) const
+void BoolEditor::Render(Paint& paint, const int x, const int y)
 {
     ValueEditor::Render(paint, x, y);
     

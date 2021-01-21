@@ -7,25 +7,24 @@
 #include "StringEditor.h"
 #include "OptionEditor.h"
 
-class PropertyPage
+class PropertyPage : public BaseControl
 {
 public:
-    PropertyPage(sFONT& font);
+    PropertyPage();
 
     void Add(std::shared_ptr<ValueEditor> editor);
 
     std::shared_ptr<ValueEditor> GetSelected();
 
-    void Click();
-    void Scroll(const int delta);
+    virtual void Click() override;
+    virtual void Scroll(const int delta) override;
 
-    void Render(Paint& paint, const int x, const int y, const int width);
+    virtual void Render(Paint& paint, const int x, const int y) override;
 
 private:
     std::shared_ptr<ValueEditor> UpdateSelection(const int delta);
 
 private:
-    sFONT& _font;
-    uint8_t _selectedIdx;
+    int _selectedIdx;
     std::vector<std::shared_ptr<ValueEditor>> _editors;
 };

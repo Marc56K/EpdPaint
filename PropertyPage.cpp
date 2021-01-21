@@ -1,8 +1,8 @@
 #include "PropertyPage.h"
 #include "MathUtils.h"
 
-PropertyPage::PropertyPage(sFONT& font) :
-    _font(font), _selectedIdx(0)
+PropertyPage::PropertyPage() :
+    _selectedIdx(-1)
 {    
 }
 
@@ -26,7 +26,24 @@ std::shared_ptr<ValueEditor> PropertyPage::UpdateSelection(const int delta)
     std::shared_ptr<ValueEditor> result = nullptr;
     if (!_editors.empty())
     {
-        _selectedIdx = MathUtils::Modulo<int>(_selectedIdx + delta, _editors.size());
+        if (_selectedIdx + delta < 0)
+        {
+            _selectedIdx = -1;
+        }
+        else
+        {
+            _selectedIdx = MathUtils::Modulo<int>(_selectedIdx + delta, _editors.size());
+        }
+
+        if (_selectedIdx < 0)
+        {
+            if (IsSelected()) Deselect();
+        }
+        else if (_selectedIdx < _editors.size() - 1)
+        {
+            if (!IsSelected()) Select();
+        }
+
         for (int i = 0; i < _editors.size(); ++i)
         {
             auto editor = _editors[i];
@@ -51,6 +68,12 @@ void PropertyPage::Click()
     {
         selected->Click();
     }
+    else
+    {
+        _selectedIdx = 0;
+        UpdateSelection(0);
+    }
+    
 }
 
 void PropertyPage::Scroll(const int delta)
@@ -69,13 +92,18 @@ void PropertyPage::Scroll(const int delta)
     }
 }
 
-void PropertyPage::Render(Paint& paint, const int x, const int y, const int width)
+void PropertyPage::Render(Paint& paint, const int x, const int y)
 {
     int yPos = y;
     for (auto editor : _editors)
     {
-        editor->SetWdith(width);
+        editor->SetWdith(_width);
+        const int h = editor->GetActualHeight() + 2;
+        if ((yPos + h - y) > _height)
+        {
+            return;
+        }
         editor->Render(paint, x, yPos);
-        yPos += editor->GetActualHeight() + 2;
+        yPos += h;
     }
 }

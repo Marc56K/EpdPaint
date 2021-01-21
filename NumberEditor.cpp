@@ -62,7 +62,7 @@ void NumberEditor::Scroll(const int delta)
     SetValue(GetValue() + _stepSize * delta);
 }
 
-void NumberEditor::Render(Paint& paint, const int x, const int y) const
+void NumberEditor::Render(Paint& paint, const int x, const int y)
 {
     ValueEditor::Render(paint, x, y);
     

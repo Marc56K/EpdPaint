@@ -66,7 +66,7 @@ void OptionEditor::Scroll(const int delta)
     SetSelectedIdx(std::max(0, idx));
 }
 
-void OptionEditor::Render(Paint& paint, const int x, const int y) const
+void OptionEditor::Render(Paint& paint, const int x, const int y)
 {
     ValueEditor::Render(paint, x, y);
     

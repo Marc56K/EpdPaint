@@ -20,7 +20,7 @@ public:
     void Click() override;
     void Scroll(const int delta) override;
 
-    void Render(Paint& paint, const int x, const int y) const override;
+    void Render(Paint& paint, const int x, const int y) override;
 
 private:
     uint8_t _hh;

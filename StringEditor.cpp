@@ -98,7 +98,7 @@ void StringEditor::Scroll(const int delta)
     }
 }
 
-void StringEditor::Render(Paint& paint, const int x, const int y) const
+void StringEditor::Render(Paint& paint, const int x, const int y)
 {
     ValueEditor::Render(paint, x, y);
     
