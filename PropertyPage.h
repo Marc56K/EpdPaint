@@ -11,6 +11,7 @@ class PropertyPage : public BaseControl
 {
 public:
     PropertyPage();
+    ~PropertyPage();
 
     void Add(std::shared_ptr<ValueEditor> editor);
 

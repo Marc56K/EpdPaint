@@ -6,6 +6,10 @@ PropertyPage::PropertyPage() :
 {    
 }
 
+PropertyPage::~PropertyPage()
+{
+}
+
 void PropertyPage::Add(std::shared_ptr<ValueEditor> editor)
 {
     if (editor != nullptr)
