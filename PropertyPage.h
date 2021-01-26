@@ -10,7 +10,7 @@
 class PropertyPage : public BaseControl
 {
 public:
-    PropertyPage();
+    PropertyPage(std::function<void()> onSelectedChanged = nullptr);
     ~PropertyPage();
 
     void Add(std::shared_ptr<ValueEditor> editor);
@@ -27,5 +27,6 @@ private:
 
 private:
     int _selectedIdx;
-    std::vector<std::shared_ptr<ValueEditor>> _editors;
+    std::function<void()> _onSelectedChanged;
+    std::vector<std::shared_ptr<ValueEditor>> _editors;    
 };

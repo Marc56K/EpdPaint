@@ -1,8 +1,8 @@
 #include "PropertyPage.h"
 #include "MathUtils.h"
 
-PropertyPage::PropertyPage() :
-    _selectedIdx(-1)
+PropertyPage::PropertyPage(std::function<void()> onSelectedChanged) :
+    _selectedIdx(-1), _onSelectedChanged(onSelectedChanged)
 {    
 }
 
@@ -30,6 +30,7 @@ std::shared_ptr<ValueEditor> PropertyPage::UpdateSelection(const int delta)
     std::shared_ptr<ValueEditor> result = nullptr;
     if (!_editors.empty())
     {
+        const int lastSelectedIdx = _selectedIdx;
         if (_selectedIdx + delta < 0)
         {
             _selectedIdx = -1;
@@ -60,6 +61,11 @@ std::shared_ptr<ValueEditor> PropertyPage::UpdateSelection(const int delta)
             {
                 editor->Deselect();
             }
+        }
+
+        if (lastSelectedIdx != _selectedIdx && _onSelectedChanged != nullptr)
+        {
+            _onSelectedChanged();
         }
     }
     return result;
