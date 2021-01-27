@@ -20,6 +20,23 @@ void PageNavigator::AddPage(const std::string& title, std::shared_ptr<BaseContro
     _pages.push_back({title, control});
 }
 
+void PageNavigator::SetCurrentPage(const int currentPageIdx)
+{
+    if (!_pages.empty())
+    {
+        const int idx = std::min<int>(_pages.size() - 1, std::max<int>(0, currentPageIdx));
+        if (idx != _currentPageIdx)
+        {
+            auto& page = _pages[_currentPageIdx];
+            if (page.control != nullptr && page.control->IsSelected())
+            {
+                page.control->Deselect();
+            }
+            _currentPageIdx = idx;
+        }
+    }
+}
+
 void PageNavigator::Click()
 {
     if (_currentPageIdx < _pages.size())

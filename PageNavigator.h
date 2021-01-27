@@ -20,6 +20,7 @@ public:
     void SetFont(sFONT& font);
 
     void AddPage(const std::string& title, std::shared_ptr<BaseControl> control);
+    void SetCurrentPage(const int currentPageIdx);
 
     virtual void Click() override;
     virtual void Scroll(const int delta) override;
