@@ -20,8 +20,8 @@ public:
 
     bool IsEditing() const override;
 
-    void Click() override;
-    void Scroll(const int delta) override;
+    bool Click() override;
+    bool Scroll(const int delta) override;
 
     void Render(Paint& paint, const int x, const int y) override;
 

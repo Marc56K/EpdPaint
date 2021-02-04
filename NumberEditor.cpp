@@ -52,14 +52,16 @@ bool NumberEditor::IsEditing() const
     return _editing;
 }
 
-void NumberEditor::Click()
+bool NumberEditor::Click()
 {
     _editing = !_editing;
+    return IsEditing();
 }
 
-void NumberEditor::Scroll(const int delta)
+bool NumberEditor::Scroll(const int delta)
 {
     SetValue(GetValue() + _stepSize * delta);
+    return IsEditing();
 }
 
 void NumberEditor::Render(Paint& paint, const int x, const int y)

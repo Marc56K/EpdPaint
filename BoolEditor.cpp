@@ -37,14 +37,16 @@ bool BoolEditor::IsEditing() const
     return false;
 }
 
-void BoolEditor::Click()
+bool BoolEditor::Click()
 {
     SetValue(!GetValue());
+    return IsEditing();
 }
 
-void BoolEditor::Scroll(const int delta)
+bool BoolEditor::Scroll(const int delta)
 {
     SetValue(!GetValue());
+    return IsEditing();
 }
 
 void BoolEditor::Render(Paint& paint, const int x, const int y)

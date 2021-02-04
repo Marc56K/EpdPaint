@@ -10,15 +10,15 @@
 class PropertyPage : public BaseControl
 {
 public:
-    PropertyPage(std::function<void()> onSelectedChanged = nullptr);
+    PropertyPage(std::function<void()> onEditingFinished = nullptr);
     ~PropertyPage();
 
     void Add(std::shared_ptr<ValueEditor> editor);
 
     std::shared_ptr<ValueEditor> GetSelected();
 
-    virtual void Click() override;
-    virtual void Scroll(const int delta) override;
+    virtual bool Click() override;
+    virtual bool Scroll(const int delta) override;
 
     virtual void Render(Paint& paint, const int x, const int y) override;
 
@@ -27,6 +27,6 @@ private:
 
 private:
     int _selectedIdx;
-    std::function<void()> _onSelectedChanged;
+    std::function<void()> _onEditingFinished;
     std::vector<std::shared_ptr<ValueEditor>> _editors;    
 };

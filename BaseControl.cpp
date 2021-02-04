@@ -31,12 +31,14 @@ void BaseControl::Deselect()
     _selected = false;
 }
 
-void BaseControl::Click()
+bool BaseControl::Click()
 {
+    return false;
 }
 
-void BaseControl::Scroll(const int delta)
+bool BaseControl::Scroll(const int delta)
 {
+    return false;
 }
 
 void BaseControl::SetWdith(const int width)

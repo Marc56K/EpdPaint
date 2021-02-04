@@ -22,8 +22,8 @@ public:
     void AddPage(const std::string& title, std::shared_ptr<BaseControl> control);
     void SetCurrentPage(const int currentPageIdx);
 
-    virtual void Click() override;
-    virtual void Scroll(const int delta) override;
+    virtual bool Click() override;
+    virtual bool Scroll(const int delta) override;
 
     virtual void Render(Paint& paint, const int x, const int y) override;
 

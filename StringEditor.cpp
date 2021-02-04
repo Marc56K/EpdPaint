@@ -39,7 +39,7 @@ bool StringEditor::IsEditing() const
     return _editIdx > -1;
 }
 
-void StringEditor::Click()
+bool StringEditor::Click()
 {
     if (_editIdx < 0)
     {
@@ -50,9 +50,10 @@ void StringEditor::Click()
     {
         _editChar = !_editChar;
     }
+    return IsEditing();
 }
 
-void StringEditor::Scroll(const int delta)
+bool StringEditor::Scroll(const int delta)
 {
     if (_editIdx > -1)
     {
@@ -96,6 +97,7 @@ void StringEditor::Scroll(const int delta)
             }
         }
     }
+    return IsEditing();
 }
 
 void StringEditor::Render(Paint& paint, const int x, const int y)

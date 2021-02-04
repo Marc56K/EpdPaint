@@ -45,12 +45,13 @@ bool TimeEditor::IsEditing() const
     return _editMode > 0;
 }
 
-void TimeEditor::Click()
+bool TimeEditor::Click()
 {
     _editMode = (_editMode + 1) % 3;
+    return IsEditing();
 }
 
-void TimeEditor::Scroll(const int delta)
+bool TimeEditor::Scroll(const int delta)
 {
     switch (_editMode)
     {
@@ -63,6 +64,7 @@ void TimeEditor::Scroll(const int delta)
     default:
         break;
     }
+    return IsEditing();
 }
 
 void TimeEditor::Render(Paint& paint, const int x, const int y)

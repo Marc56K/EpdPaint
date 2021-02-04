@@ -55,15 +55,17 @@ bool OptionEditor::IsEditing() const
     return _editing;
 }
 
-void OptionEditor::Click()
+bool OptionEditor::Click()
 {
     _editing = !_editing;
+    return IsEditing();
 }
 
-void OptionEditor::Scroll(const int delta)
+bool OptionEditor::Scroll(const int delta)
 {
     int idx = delta + GetSelectedIdx();
     SetSelectedIdx(std::max(0, idx));
+    return IsEditing();
 }
 
 void OptionEditor::Render(Paint& paint, const int x, const int y)

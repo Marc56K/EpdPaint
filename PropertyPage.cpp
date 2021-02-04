@@ -1,8 +1,8 @@
 #include "PropertyPage.h"
 #include "MathUtils.h"
 
-PropertyPage::PropertyPage(std::function<void()> onSelectedChanged) :
-    _selectedIdx(-1), _onSelectedChanged(onSelectedChanged)
+PropertyPage::PropertyPage(std::function<void()> onEditingFinished) :
+    _selectedIdx(-1), _onEditingFinished(onEditingFinished)
 {    
 }
 
@@ -30,7 +30,6 @@ std::shared_ptr<ValueEditor> PropertyPage::UpdateSelection(const int delta)
     std::shared_ptr<ValueEditor> result = nullptr;
     if (!_editors.empty())
     {
-        const int lastSelectedIdx = _selectedIdx;
         if (_selectedIdx + delta < 0)
         {
             _selectedIdx = -1;
@@ -62,44 +61,46 @@ std::shared_ptr<ValueEditor> PropertyPage::UpdateSelection(const int delta)
                 editor->Deselect();
             }
         }
-
-        if (lastSelectedIdx != _selectedIdx && _onSelectedChanged != nullptr)
-        {
-            _onSelectedChanged();
-        }
     }
     return result;
 }
 
-void PropertyPage::Click()
+bool PropertyPage::Click()
 {
     auto selected = GetSelected();
     if (selected != nullptr)
     {
-        selected->Click();
+        if (!selected->Click() && _onEditingFinished != nullptr)
+        {
+            _onEditingFinished();
+        }
     }
     else
     {
         _selectedIdx = 0;
         UpdateSelection(0);
     }
-    
+    return true;
 }
 
-void PropertyPage::Scroll(const int delta)
+bool PropertyPage::Scroll(const int delta)
 {
     auto selected = GetSelected();
     if (selected != nullptr && delta != 0)
     {
         if (selected->IsEditing())
         {
-            selected->Scroll(delta);
+            if (!selected->Scroll(delta) && _onEditingFinished != nullptr)
+            {
+                _onEditingFinished();
+            }
         }
         else
         {
             UpdateSelection(delta < 0 ? -1 : 1);
         }
     }
+    return true;
 }
 
 void PropertyPage::Render(Paint& paint, const int x, const int y)

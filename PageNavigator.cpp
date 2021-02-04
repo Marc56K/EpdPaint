@@ -37,30 +37,31 @@ void PageNavigator::SetCurrentPage(const int currentPageIdx)
     }
 }
 
-void PageNavigator::Click()
+bool PageNavigator::Click()
 {
     if (_currentPageIdx < _pages.size())
     {
         auto& page = _pages[_currentPageIdx];
         if (page.control != nullptr)
         {
-            page.control->Click();
+            return page.control->Click();
         }
     }
+    return false;
 }
 
-void PageNavigator::Scroll(const int delta)
+bool PageNavigator::Scroll(const int delta)
 {
     if (_currentPageIdx < _pages.size())
     {
         auto& page = _pages[_currentPageIdx];
         if (page.control != nullptr && page.control->IsSelected())
         {
-            page.control->Scroll(delta);
-            return;
+            return page.control->Scroll(delta);
         }
     }
     _currentPageIdx = std::min<int>(_pages.size() - 1, std::max<int>(0, _currentPageIdx + delta));
+    return true;
 }
 
 void PageNavigator::Render(Paint& paint, const int x, const int y)

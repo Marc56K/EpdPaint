@@ -10,8 +10,8 @@ public:
     virtual bool IsSelected() const;
     virtual void Select();
     virtual void Deselect();
-    virtual void Click();
-    virtual void Scroll(const int delta);
+    virtual bool Click();
+    virtual bool Scroll(const int delta);
     virtual void SetWdith(const int width);
     virtual void SetHeight(const int height);
     virtual int GetActualWidth() const;
