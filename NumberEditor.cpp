@@ -12,7 +12,7 @@ NumberEditor::NumberEditor(
         const double maxValue, 
         const double value,
         std::function<void(const double)> onValueChanged) : 
-    ValueEditor(name),
+    PropertyPageEntry(name),
     _unit(unit),
     _decimalPlaces(decimalPlaces),
     _stepSize(stepSize),
@@ -66,7 +66,7 @@ bool NumberEditor::Scroll(const int delta)
 
 void NumberEditor::Render(Paint& paint, const int x, const int y)
 {
-    ValueEditor::Render(paint, x, y);
+    PropertyPageEntry::Render(paint, x, y);
     
     const int boxWidth = GetActualWidth();
     const int boxHeight = GetActualHeight();

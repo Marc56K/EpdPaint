@@ -10,7 +10,7 @@ OptionEditor::OptionEditor(
         const std::vector<std::string>& options,
         const uint8_t selectedIdx,
         std::function<void(const uint8_t, const std::string&)> onValueChanged) : 
-    ValueEditor(name),
+    PropertyPageEntry(name),
     _options(options),
     _selectedIdx(selectedIdx),
     _onValueChanged(onValueChanged),
@@ -70,7 +70,7 @@ bool OptionEditor::Scroll(const int delta)
 
 void OptionEditor::Render(Paint& paint, const int x, const int y)
 {
-    ValueEditor::Render(paint, x, y);
+    PropertyPageEntry::Render(paint, x, y);
     
     const int boxWidth = GetActualWidth();
     const int boxHeight = GetActualHeight();

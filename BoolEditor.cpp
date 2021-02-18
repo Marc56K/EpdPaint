@@ -4,7 +4,7 @@ BoolEditor::BoolEditor(
         const std::string& name,
         const bool value,
         std::function<void(const bool)> onValueChanged) :
-    ValueEditor(name),
+    PropertyPageEntry(name),
     _value(value),
     _onValueChanged(onValueChanged)
 {
@@ -51,7 +51,7 @@ bool BoolEditor::Scroll(const int delta)
 
 void BoolEditor::Render(Paint& paint, const int x, const int y)
 {
-    ValueEditor::Render(paint, x, y);
+    PropertyPageEntry::Render(paint, x, y);
     
     const int boxWidth = GetActualWidth();
     const int boxHeight = GetActualHeight();

@@ -1,33 +1,33 @@
-#include "ValueEditor.h"
+#include "PropertyPageEntry.h"
 #include <sstream>
 
-ValueEditor::ValueEditor(const std::string& utf8name) :
+PropertyPageEntry::PropertyPageEntry(const std::string& utf8name) :
     _utf8name(utf8name),
     _latin1name(Paint::Utf8ToLatin1String(utf8name.c_str())),
     _padding(2)
 {    
 }
 
-ValueEditor::~ValueEditor()
+PropertyPageEntry::~PropertyPageEntry()
 {    
 }
 
-const std::string& ValueEditor::GetUtf8Name() const
+const std::string& PropertyPageEntry::GetUtf8Name() const
 {
     return _utf8name;
 }
 
-bool ValueEditor::IsEditing() const
+bool PropertyPageEntry::IsEditing() const
 {
     return false;
 }
 
-void ValueEditor::SetPadding(const int padding)
+void PropertyPageEntry::SetPadding(const int padding)
 {
     _padding = padding;
 }
 
-int ValueEditor::GetActualWidth() const
+int PropertyPageEntry::GetActualWidth() const
 {
     if (_width <= 0)
     {
@@ -36,7 +36,7 @@ int ValueEditor::GetActualWidth() const
     return _width;
 }
 
-int ValueEditor::GetActualHeight() const
+int PropertyPageEntry::GetActualHeight() const
 {
     if (_height <= 0)
     {
@@ -45,7 +45,7 @@ int ValueEditor::GetActualHeight() const
     return _height;
 }
 
-void ValueEditor::Render(Paint& paint, const int x, const int y)
+void PropertyPageEntry::Render(Paint& paint, const int x, const int y)
 {
     const int boxWidth = GetActualWidth();
     const int boxHeight = GetActualHeight();
@@ -61,7 +61,7 @@ void ValueEditor::Render(Paint& paint, const int x, const int y)
     paint.DrawRectangle(x, y, x + boxWidth, y + boxHeight, BLACK);
 }
 
-void ValueEditor::GetColors(const bool selected, int* back, int* front)
+void PropertyPageEntry::GetColors(const bool selected, int* back, int* front)
 {
     auto setColor = [](int* target, const int color)
     {

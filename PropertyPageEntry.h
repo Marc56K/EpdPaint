@@ -2,11 +2,11 @@
 #include <string>
 #include "BaseControl.h"
 
-class ValueEditor : public BaseControl
+class PropertyPageEntry : public BaseControl
 {
 public:
-    ValueEditor(const std::string& utf8name);
-    virtual ~ValueEditor();
+    PropertyPageEntry(const std::string& utf8name);
+    virtual ~PropertyPageEntry();
 
     virtual const std::string& GetUtf8Name() const;
 

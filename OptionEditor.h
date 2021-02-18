@@ -1,9 +1,9 @@
 #pragma once
 #include <functional>
 #include <vector>
-#include "ValueEditor.h"
+#include "PropertyPageEntry.h"
 
-class OptionEditor : public ValueEditor
+class OptionEditor : public PropertyPageEntry
 {
 public:
     OptionEditor(

@@ -5,7 +5,7 @@ StringEditor::StringEditor(
         const std::string& name,
         const std::string& value,
         std::function<void(const std::string&)> onValueChanged) :
-    ValueEditor(name),
+    PropertyPageEntry(name),
     _editIdx(-1),
     _editChar(false),
     _value(value),
@@ -102,7 +102,7 @@ bool StringEditor::Scroll(const int delta)
 
 void StringEditor::Render(Paint& paint, const int x, const int y)
 {
-    ValueEditor::Render(paint, x, y);
+    PropertyPageEntry::Render(paint, x, y);
     
     const int boxWidth = GetActualWidth();
     const int boxHeight = GetActualHeight();

@@ -10,7 +10,7 @@ PropertyPage::~PropertyPage()
 {
 }
 
-void PropertyPage::Add(std::shared_ptr<ValueEditor> editor)
+void PropertyPage::Add(std::shared_ptr<PropertyPageEntry> editor)
 {
     if (editor != nullptr)
     {
@@ -20,14 +20,14 @@ void PropertyPage::Add(std::shared_ptr<ValueEditor> editor)
     }
 }
 
-std::shared_ptr<ValueEditor> PropertyPage::GetSelected()
+std::shared_ptr<PropertyPageEntry> PropertyPage::GetSelected()
 {
     return UpdateSelection(0);
 }
 
-std::shared_ptr<ValueEditor> PropertyPage::UpdateSelection(const int delta)
+std::shared_ptr<PropertyPageEntry> PropertyPage::UpdateSelection(const int delta)
 {
-    std::shared_ptr<ValueEditor> result = nullptr;
+    std::shared_ptr<PropertyPageEntry> result = nullptr;
     if (!_editors.empty())
     {
         if (_selectedIdx + delta < 0)

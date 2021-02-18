@@ -8,7 +8,7 @@ TimeEditor::TimeEditor(
         const uint8_t hh,
         const uint8_t mm,
         std::function<void(const uint8_t hh, const uint8_t mm)> onValueChanged) :
-    ValueEditor(name),
+    PropertyPageEntry(name),
     _hh(hh),
     _mm(mm),
     _onValueChanged(onValueChanged),
@@ -69,7 +69,7 @@ bool TimeEditor::Scroll(const int delta)
 
 void TimeEditor::Render(Paint& paint, const int x, const int y)
 {
-    ValueEditor::Render(paint, x, y);
+    PropertyPageEntry::Render(paint, x, y);
     
     const int boxWidth = GetActualWidth();
     const int boxHeight = GetActualHeight();

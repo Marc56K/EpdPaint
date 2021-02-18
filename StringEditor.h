@@ -1,8 +1,8 @@
 #pragma once
 #include <functional>
-#include "ValueEditor.h"
+#include "PropertyPageEntry.h"
 
-class StringEditor : public ValueEditor
+class StringEditor : public PropertyPageEntry
 {
 public:
     StringEditor(
