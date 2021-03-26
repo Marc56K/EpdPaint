@@ -114,6 +114,11 @@ unsigned char *Paint::GetImage(void)
     return this->image;
 }
 
+BitsPerPixel Paint::GetBitsPerPixel(void)
+{
+    return this->bpp;
+}
+
 int Paint::GetWidth(void)
 {
     return this->width;

@@ -33,6 +33,7 @@ public:
     Paint(unsigned char* image, int width, int height, BitsPerPixel bpp = ONE_BIT);
     ~Paint();
     void Clear(int colored);
+    BitsPerPixel GetBitsPerPixel(void);
     int  GetWidth(void);
     void SetWidth(int width);
     int  GetHeight(void);
