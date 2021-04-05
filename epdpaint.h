@@ -8,6 +8,7 @@
 
 #define BLACK 0
 #define WHITE 1
+#define RED   2
 
 #include "fonts.h"
 #include "images.h"
@@ -54,6 +55,7 @@ public:
     void DrawCircle(int x, int y, int radius, int colored);
     void DrawFilledCircle(int x, int y, int radius, int colored);
     void DrawImage(int x, int y, sIMAGE* img);
+    void DrawImage(int x, int y, sIMAGE* img, int colorA, int colorB);
 
     static std::string Utf8ToLatin1String(const char* utf8Text);
 

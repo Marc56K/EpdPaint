@@ -459,6 +459,31 @@ void Paint::DrawImage(int x, int y, sIMAGE *img)
     }
 }
 
+void Paint::DrawImage(int x, int y, sIMAGE* img, int colorA, int colorB)
+{
+    int i, j;
+    const unsigned char *ptr = img->Data;
+    for (j = 0; j < img->Height; j++)
+    {
+        for (i = 0; i < img->Width; i++)
+        {
+            const unsigned char val = (pgm_read_byte(ptr) >> (6 - ((2 * i) % 8))) & 3;
+            if (val != 0)
+            {
+                DrawPixel(x + i, y + j, (val == 1 ? colorA : colorB));
+            }
+            if ((2 * i) % 8 == 6)
+            {
+                ptr++;
+            }
+        }
+        if (img->Width % 4 != 0)
+        {
+            ptr++;
+        }
+    }   
+}
+
 std::string Paint::Utf8ToLatin1String(const char *utf8Text)
 {
     auto GetUtf8CharacterLength = [](const unsigned char utf8Char) -> int {
