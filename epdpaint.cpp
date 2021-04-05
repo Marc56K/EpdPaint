@@ -258,24 +258,48 @@ void Paint::DrawStringAt(int x, int y, const char *text, sFONT *font, int colore
     }
 }
 
-void Paint::DrawUtf8StringAt(int x, int y, const char *text, sFONT *font, int colored, TextAlignment alignment)
+void Paint::DrawUtf8StringAt(int x, int y, const char *text, sFONT *font, int colored, TextAlignment alignment, int lineWrapLength)
 {
     if (font != nullptr)
     {
-        std::string latin1String = Utf8ToLatin1String(text);
-
-        switch (alignment)
+        auto drawString = [&](const std::string& txt, const int yOffset)
         {
-        case TextAlignment::LEFT:
-            break;
-        case TextAlignment::CENTER:
-            x -= (latin1String.length() * font->Width / 2);
-            break;
-        case TextAlignment::RIGHT:
-            x -= latin1String.length() * font->Width;
-        }
+            int xpos = x;
+            int ypos = y + yOffset;
+            switch (alignment)
+            {
+            case TextAlignment::LEFT:
+                break;
+            case TextAlignment::CENTER:
+                xpos -= (txt.length() * font->Width / 2);
+                break;
+            case TextAlignment::RIGHT:
+                xpos -= txt.length() * font->Width;
+            }
 
-        DrawStringAt(x, y, latin1String.c_str(), font, colored);
+            DrawStringAt(xpos, ypos, txt.c_str(), font, colored);
+        };
+
+        std::string latin1String = Utf8ToLatin1String(text);
+        if (lineWrapLength <= 0)
+        {
+            drawString(latin1String, 0);
+        }
+        else
+        {
+            int lineIdx = 0;
+            for (int i = 0; i < latin1String.length(); i += lineWrapLength)
+            {
+                std::string line = latin1String.substr(i, lineWrapLength);
+                while (line.length() > 0 && line[line.length() - 1] == ' ')
+                {
+                    line.resize(line.length() - 1);
+                }
+
+                drawString(line, lineIdx * font->Height);
+                lineIdx++;
+            }
+        }
     }
 }
 
