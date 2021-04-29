@@ -67,6 +67,7 @@ extern sFONT Font12;
 extern sFONT Font8;
 extern sFONT Consolas20;
 extern sFONT Consolas24;
+extern sFONT Overpass_mono28;
 
 #ifdef __cplusplus
 }
